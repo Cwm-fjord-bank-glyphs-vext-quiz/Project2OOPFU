@@ -17,6 +17,6 @@ public class Main{
         System.out.println(" 8 identifty trading day with largest percentage decrease");
 
     }
-      System.out.println(" 8 identifty trading day with largest percentage decrease");
+
 }
 
