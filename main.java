@@ -23,7 +23,7 @@ public class Main {
        String startDate = range[0];
        String ending = range[1];
  
-       ArrayList<PriceRecord> records = loadRecords(ticker, startDate, ending);
+       ArrayList<DayRecordStock> records = loadRecords(ticker, startDate, ending);
  
        boolean running = true;
        while (running) {
@@ -108,14 +108,14 @@ public class Main {
  
    // ---------- Loading ----------
  
-   // Uses ReadFile to get the matching lines, then turns them into PriceRecord objects
-   private static ArrayList<PriceRecord> loadRecords(String ticker, String start, String end) {
+   // Uses ReadFile to get the matching lines, then turns them into DayRecordStock objects
+   private static ArrayList<DayRecordStock> loadRecords(String ticker, String start, String end) {
        ArrayList<String> data = ReadFile.read(ticker, start, end);
-       ArrayList<PriceRecord> records = new ArrayList<>();
+       ArrayList<DayRecordStock> records = new ArrayList<>();
        int unreadable = 0;
  
        for (String line : data) {
-           PriceRecord record = PriceRecord.fromCsvLine(line);
+           DayRecordStock record = DayRecordStock.fromCsvLine(line);
            if (record == null) {
                unreadable++;
            } else {
@@ -123,7 +123,7 @@ public class Main {
            }
        }
  
-       records.sort(Comparator.comparing(PriceRecord::getDate));
+       records.sort(Comparator.comparing(DayRecordStock::getDate));
  
        if (unreadable > 0) {
            System.out.println("Note: skipped " + unreadable + " row(s) that could not be read.");
@@ -140,8 +140,8 @@ public class Main {
    // ---------- Menu actions ----------
  
    private static void runOption(String choice, String ticker, String start, String end,
-                                 ArrayList<PriceRecord> records) {
-       MarketAnalyzer analyzer = new MarketAnalyzer(records);
+                                 ArrayList<DayRecordStock> records) {
+       RecordCalculator analyzer = new RecordCalculator(records);
        System.out.println();
  
        switch (choice) {
@@ -175,17 +175,17 @@ public class Main {
        }
    }
  
-   private static void printRecords(List<PriceRecord> records) {
+   private static void printRecords(List<DayRecordStock> records) {
        System.out.printf("%-12s %10s %10s %10s %10s %15s%n",
                "Date", "Open", "High", "Low", "Close", "Volume");
-       for (PriceRecord r : records) {
+       for (DayRecordStock r : records) {
            System.out.printf(Locale.US, "%-12s %10.2f %10.2f %10.2f %10.2f %,15d%n",
                    r.getDate().format(DISPLAY_DATE), r.getOpen(), r.getHigh(),
                    r.getLow(), r.getClose(), r.getVolume());
        }
    }
  
-   private static void printReport(String ticker, String start, String end, MarketAnalyzer a) {
+   private static void printReport(String ticker, String start, String end, RecordCalculator a) {
        System.out.println("Ticker: " + ticker);
        System.out.println("Period: " + formatDate(start) + " - " + formatDate(end));
        System.out.println();
