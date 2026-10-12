@@ -3,7 +3,7 @@ import java.time.format.DateTimeParseExecption
 
 
 // One trading day for one stock
-class PriceRecord {
+class DayRecordStock {
    private final LocalDate date;
    private final double open;
    private final double high;
@@ -11,7 +11,7 @@ class PriceRecord {
    private final double close;
    private final long volume;
  
-   public PriceRecord(LocalDate date, double open, double high, double low, double close, long volume) {
+   public DayRecordStock(LocalDate date, double open, double high, double low, double close, long volume) {
        this.date = date;
        this.open = open;
        this.high = high;
@@ -22,10 +22,10 @@ class PriceRecord {
  
    // Expects: Date,Open,High,Low,Close,Volume  (date as YYYY-MM-DD)
    // Returns null if the line can't be read, so one bad row doesn't crash the program
-   public static PriceRecord fromCsvLine(String line) {
+   public static DayRecordStock fromCsvLine(String line) {
        try {
            String[] p = line.split(",");
-           return new PriceRecord(
+           return new DayRecordStock(
                    LocalDate.parse(p[0].trim()),
                    Double.parseDouble(p[1].trim()),
                    Double.parseDouble(p[2].trim()),
