@@ -3,9 +3,9 @@ import java.util.List;
 
 // Does all the calculations on a list of records (sorted by date, not empty)
 class RecordCalculator {
-   private final List<PriceRecord> records;
+   private final List<DayRecordStock> records;
 
-   public RecordCalculator(List<PriceRecord> records) {
+   public RecordCalculator(List<DayRecordStock> records) {
        if (records.isEmpty()) {
            throw new IllegalArgumentException("Cannot analyze an empty period.");
        }
@@ -14,7 +14,7 @@ class RecordCalculator {
 
    public double getHighestClose() {
        double max = records.get(0).getClose();
-       for (PriceRecord r : records) {
+       for (DayRecordStock r : records) {
            if (r.getClose() > max) {
                max = r.getClose();
            }
@@ -24,7 +24,7 @@ class RecordCalculator {
 
    public double getLowestClose() {
        double min = records.get(0).getClose();
-       for (PriceRecord r : records) {
+       for (DayRecordStock r : records) {
            if (r.getClose() < min) {
                min = r.getClose();
            }
@@ -34,7 +34,7 @@ class RecordCalculator {
 
    public double getAverageClose() {
        double sum = 0;
-       for (PriceRecord r : records) {
+       for (DayRecordStock r : records) {
            sum += r.getClose();
        }
        return sum / records.size();
@@ -49,7 +49,7 @@ class RecordCalculator {
 
    public double getAverageVolume() {
        double sum = 0;
-       for (PriceRecord r : records) {
+       for (DayRecordStock r : records) {
            sum += r.getVolume();
        }
        return sum / records.size();
